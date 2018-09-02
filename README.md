@@ -7,6 +7,8 @@ Lite User Interface for Trojan
 - Download exe from release download or compile from source
 - Put ``trojan.exe`` and ``config.json`` from Trojan core into the same folder
 - Run ``Litrojan.exe``
+- SOCKS5 Proxy Server should now started at \[Local Addr\]:\[Local Port\]
+- Enjoy
 
 ### Requirements  
 - .NET Framework 4.5+
@@ -14,3 +16,4 @@ Lite User Interface for Trojan
 
 ### Documentations
 - Configure guide: [Offical Guide](https://trojan-gfw.github.io/trojan/config)
+- Trojan Core Source: [Github](https://github.com/trojan-gfw/trojan)
