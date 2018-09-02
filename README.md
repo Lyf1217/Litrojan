@@ -4,7 +4,7 @@
 Lite User Interface for Trojan, an unidentifiable mechanism that helps you bypass GFW.
 
 ### How to use
-- Download exe from release download or compile from source
+- Download [release](https://github.com/LimiQS/Litrojan/releases/latest) or compile from source
 - Put ``trojan.exe`` and ``config.json`` from Trojan core into the same folder
 - Run ``Litrojan.exe``
 - SOCKS5 Proxy Server should now started at \[Local Addr\]:\[Local Port\]
