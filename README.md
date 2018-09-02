@@ -17,3 +17,10 @@ Lite User Interface for Trojan
 ### Documentations
 - Configure guide: [Offical Guide](https://trojan-gfw.github.io/trojan/config)
 - Trojan Core Source: [Github](https://github.com/trojan-gfw/trojan)
+
+### Screenshots
+![](https://i.imgur.com/veoOkoJ.png)
+
+![](https://i.imgur.com/wwU2Wzd.png)
+
+![](https://i.imgur.com/bfzFouz.png)
