@@ -1,7 +1,7 @@
 ![](https://i.imgur.com/am6arbP.png)
 
 # Litrojan
-Lite User Interface for Trojan
+Lite User Interface for Trojan, an unidentifiable mechanism that helps you bypass GFW.
 
 ### How to use
 - Download exe from release download or compile from source
