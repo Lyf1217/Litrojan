@@ -1,1 +1,16 @@
-Litrojan
+![](https://i.imgur.com/am6arbP.png)
+
+# Litrojan
+Lite User Interface for Trojan
+
+### How to use
+- Download exe from release download or compile from source
+- Put ``trojan.exe`` and ``config.json`` from Trojan core into the same folder
+- Run ``Litrojan.exe``
+
+### Requirements  
+- .NET Framework 4.5+
+- Trojan Core 1.6.0+ [https://github.com/trojan-gfw/trojan/releases](https://github.com/trojan-gfw/trojan/releases)
+
+### Documentations
+- Configure guide: [Offical Guide](https://trojan-gfw.github.io/trojan/config)
