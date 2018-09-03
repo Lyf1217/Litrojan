@@ -67,7 +67,10 @@
     <Compile Include="TrojanConfig.cs" />
     <Compile Include="TrojanConfigBuilder.cs" />
     <Compile Include="TrojanConfigManager.cs" />
+    <Compile Include="TrojanNetworkManager.cs" />
     <Compile Include="TrojanProcessManager.cs" />
+    <Compile Include="TrojanSetting.cs" />
+    <Compile Include="TrojanSettingManager.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

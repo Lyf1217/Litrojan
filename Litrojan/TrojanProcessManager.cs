@@ -9,6 +9,7 @@ namespace Litrojan
         private string exePath;
         private string _confPath;
         private RunMode _Mode;
+        private RunStatus _Status;
         private Process proc;
         private event InfoDispDelegate infoDisp;
 
@@ -18,6 +19,18 @@ namespace Litrojan
             proc = null;
             infoDisp = InfoDisp;
             _Mode = RunMode.None;
+            _Status = RunStatus.Exceptional;
+        }
+
+        public RunStatus TrojanStatus()
+        {
+            bool running = proc != null && !proc.HasExited && proc.MainModule != null && proc.MainModule.ModuleName == Path.GetFileName(exePath);
+            var current = running ? RunStatus.Running : RunStatus.Stopped;
+            if(current != _Status)
+            {
+                current = current == RunStatus.Stopped ? RunStatus.UnexpectedExit : RunStatus.Exceptional;
+            }
+            return current;
         }
 
         public void TrojanRestart()
@@ -34,7 +47,7 @@ namespace Litrojan
         public void TrojanStop()
         {
             infoDisp("Stopping Trojan instance.", "LiProcMgmt");
-            if (GlobalVaribleHost.TrojanStatus == RunStatus.Stopped)
+            if (TrojanStatus() == RunStatus.Stopped || TrojanStatus() == RunStatus.UnexpectedExit)
             {
                 infoDisp("Trojan instance already stopped.", "LiProcMgmt");
                 return;
@@ -70,7 +83,7 @@ namespace Litrojan
                 }
             }
 
-            GlobalVaribleHost.TrojanStatus = RunStatus.Stopped;
+            _Status = RunStatus.Stopped;
 
             void BatchKill(Process[] Target)
             {
@@ -94,10 +107,14 @@ namespace Litrojan
             _confPath = confPath;
             _Mode = Mode;
             infoDisp($"Starting Trojan instance as {Enum.GetName(typeof(RunMode), Mode)}.", "LiProcMgmt");
-            if (GlobalVaribleHost.TrojanStatus == RunStatus.Running)
+            if (TrojanStatus() == RunStatus.Running)
             {
                 infoDisp("Trojan instance already running.", "LiProcMgmt");
                 return;
+            }
+            else if(TrojanStatus() == RunStatus.Exceptional)
+            {
+                TrojanStop();
             }
 
             try
@@ -129,12 +146,12 @@ namespace Litrojan
                 proc.Start();
                 proc.BeginOutputReadLine();
                 proc.BeginErrorReadLine();
-                GlobalVaribleHost.TrojanStatus = RunStatus.Running;
+                _Status = RunStatus.Running;
             }
             catch (Exception e)
             {
                 infoDisp(LitrojanUtils.ErrorFormatter($"Failed to start Trojan instance.", e), "LiProcMgmt");
-                GlobalVaribleHost.TrojanStatus = RunStatus.Exceptional;
+                _Status = RunStatus.Exceptional;
             }
         }
     }

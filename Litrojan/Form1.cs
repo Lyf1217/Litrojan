@@ -4,7 +4,6 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using System.Threading;
 
 namespace Litrojan
 {
@@ -16,7 +15,9 @@ namespace Litrojan
 
         TrojanConfigManager tcm;
         TrojanProcessManager tpm;
-        Thread autosave;
+        TrojanSettingManager tsm;
+        TrojanNetworkManager tnm;
+
         string logHost = "";
         string ALPN
         {
@@ -37,14 +38,20 @@ namespace Litrojan
             UpdateTxtLogDisplay($"Litrojan ({GlobalVaribleHost.LitrojanVer}) Started.", "Litrojan");
         }
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            tsm.TrySetRestartTrojan(tsm.Setting.AutoRestartTrojan);
+            tsm.TrySetLogSave(tsm.Setting.EnableLogSave);
+        }
+
         #region UIHelper
 
         public void InitializeFormMaterial()
         {
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
-            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
+            //materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            //materialSkinManager.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
             Sizable = false;
             MaximizeBox = false;
         }
@@ -59,11 +66,14 @@ namespace Litrojan
 
         public void LogicInit()
         {
-            tcm = new TrojanConfigManager(LitrojanUtils.GetLocalPath("config.json"), UpdateTxtLogDisplay);
-            tpm = new TrojanProcessManager(LitrojanUtils.GetLocalPath("trojan.exe"), UpdateTxtLogDisplay);
+            tcm = new TrojanConfigManager(LitrojanUtils.GetLocalPath("trojan.json"), UpdateTxtLogDisplay);
             tcm.LoadConfig();
-
-            foreach(var i in panel1.Controls)
+            tpm = new TrojanProcessManager(LitrojanUtils.GetLocalPath("trojan.exe"), UpdateTxtLogDisplay);
+            tsm = new TrojanSettingManager(LitrojanUtils.GetLocalPath("settings.json"), UpdateTxtLogDisplay, UpdateNoticeDisplay, tpm);
+            tsm.LoadSetting();
+            tnm = new TrojanNetworkManager(tcm.Config, UpdateNoticeDisplay);
+            UpdateTheme(tsm.Setting.DarkUITheme);
+            foreach (var i in panel1.Controls)
             {
                 if (i is RadioButton rb && Enum.GetName(typeof(RunMode), tcm.Config.RunMode) == rb.Text)
                 {
@@ -71,48 +81,51 @@ namespace Litrojan
                     break;
                 }
             }
-
-            autosave = new Thread(LitrojanUtils.AutoSave);
-            autosave.Start();
         }
 
         public void DoBinding()
         {
-            TxtLocalAddr.DataBindings.Add("Text", tcm.Config, "local_addr");
-            TxtLocalPort.DataBindings.Add("Text", tcm.Config, "local_port");
-            TxtRemoAddr.DataBindings.Add("Text", tcm.Config, "remote_addr");
-            TxtRemoPort.DataBindings.Add("Text", tcm.Config, "remote_port");
-            TxtTargetAddr.DataBindings.Add("Text", tcm.Config, "target_addr");
-            TxtTargetPort.DataBindings.Add("Text", tcm.Config, "target_port");
-            TxtPass.DataBindings.Add("Text", tcm.Config.password, "");
+            TxtLocalAddr.DataBindings.Add("Text", tcm.Config, "local_addr", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtLocalPort.DataBindings.Add("Text", tcm.Config, "local_port", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtRemoAddr.DataBindings.Add("Text", tcm.Config, "remote_addr", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtRemoPort.DataBindings.Add("Text", tcm.Config, "remote_port", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtTargetAddr.DataBindings.Add("Text", tcm.Config, "target_addr", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtTargetPort.DataBindings.Add("Text", tcm.Config, "target_port", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtPass.DataBindings.Add("Text", tcm.Config.password, "", false, DataSourceUpdateMode.OnPropertyChanged);
             TxtPass.BindingContext[tcm.Config.password].Position = 0;
-            ChkAppendPayload.DataBindings.Add("Checked", tcm.Config, "append_payload");
-            ComLogLevel.DataBindings.Add("SelectedIndex", tcm.Config, "log_level");
+            ChkAppendPayload.DataBindings.Add("Checked", tcm.Config, "append_payload", false, DataSourceUpdateMode.OnPropertyChanged);
+            ComLogLevel.DataBindings.Add("SelectedIndex", tcm.Config, "log_level", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            ChkVerify.DataBindings.Add("Checked", tcm.Config.ssl, "verify");
-            ChkVerifyHost.DataBindings.Add("Checked", tcm.Config.ssl, "verify_hostname");
-            TxtCertPath.DataBindings.Add("Text", tcm.Config.ssl, "cert");
-            TxtKeyPath.DataBindings.Add("Text", tcm.Config.ssl, "key");
-            TxtKeyPass.DataBindings.Add("Text", tcm.Config.ssl, "key_password");
-            TxtCipher.DataBindings.Add("Text", tcm.Config.ssl, "cipher");
-            ChkServerCipher.DataBindings.Add("Checked", tcm.Config.ssl, "prefer_server_cipher");
-            TxtSNI.DataBindings.Add("Text", tcm.Config.ssl, "sni");
-            TxtALPN.DataBindings.Add("Text", ALPN, "");
-            ChkReuse.DataBindings.Add("Checked", tcm.Config.ssl, "reuse_session");
-            TxtTimeout.DataBindings.Add("Text", tcm.Config.ssl, "session_timeout");
-            TxtCurves.DataBindings.Add("Text", tcm.Config.ssl, "curves");
+            ChkVerify.DataBindings.Add("Checked", tcm.Config.ssl, "verify", false, DataSourceUpdateMode.OnPropertyChanged);
+            ChkVerifyHost.DataBindings.Add("Checked", tcm.Config.ssl, "verify_hostname", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtCertPath.DataBindings.Add("Text", tcm.Config.ssl, "cert", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtKeyPath.DataBindings.Add("Text", tcm.Config.ssl, "key", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtKeyPass.DataBindings.Add("Text", tcm.Config.ssl, "key_password", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtCipher.DataBindings.Add("Text", tcm.Config.ssl, "cipher", false, DataSourceUpdateMode.OnPropertyChanged);
+            ChkServerCipher.DataBindings.Add("Checked", tcm.Config.ssl, "prefer_server_cipher", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtSNI.DataBindings.Add("Text", tcm.Config.ssl, "sni", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtALPN.DataBindings.Add("Text", ALPN, "", false, DataSourceUpdateMode.OnPropertyChanged);
+            ChkReuse.DataBindings.Add("Checked", tcm.Config.ssl, "reuse_session", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtTimeout.DataBindings.Add("Text", tcm.Config.ssl, "session_timeout", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtCurves.DataBindings.Add("Text", tcm.Config.ssl, "curves", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            ChkNoDelay.DataBindings.Add("Checked", tcm.Config.tcp, "no_delay");
-            ChkKeepAlive.DataBindings.Add("Checked", tcm.Config.tcp, "keep_alive");
-            ChkFastOpen.DataBindings.Add("Checked", tcm.Config.tcp, "fast_open");
-            TxtQLEN.DataBindings.Add("Text", tcm.Config.tcp, "fast_open_qlen");
+            ChkNoDelay.DataBindings.Add("Checked", tcm.Config.tcp, "no_delay", false, DataSourceUpdateMode.OnPropertyChanged);
+            ChkKeepAlive.DataBindings.Add("Checked", tcm.Config.tcp, "keep_alive", false, DataSourceUpdateMode.OnPropertyChanged);
+            ChkFastOpen.DataBindings.Add("Checked", tcm.Config.tcp, "fast_open", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtQLEN.DataBindings.Add("Text", tcm.Config.tcp, "fast_open_qlen", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            ChkSQLEnabled.DataBindings.Add("Checked", tcm.Config.mysql, "enabled");
-            TxtServerAddr.DataBindings.Add("Text", tcm.Config.mysql, "server_addr");
-            TxtServerPort.DataBindings.Add("Text", tcm.Config.mysql, "server_port");
-            TxtDatabase.DataBindings.Add("Text", tcm.Config.mysql, "database");
-            TxtUsername.DataBindings.Add("Text", tcm.Config.mysql, "username");
-            TxtSQLPass.DataBindings.Add("Text", tcm.Config.mysql, "password");
+            ChkSQLEnabled.DataBindings.Add("Checked", tcm.Config.mysql, "enabled", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtServerAddr.DataBindings.Add("Text", tcm.Config.mysql, "server_addr", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtServerPort.DataBindings.Add("Text", tcm.Config.mysql, "server_port", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtDatabase.DataBindings.Add("Text", tcm.Config.mysql, "database", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtUsername.DataBindings.Add("Text", tcm.Config.mysql, "username", false, DataSourceUpdateMode.OnPropertyChanged);
+            TxtSQLPass.DataBindings.Add("Text", tcm.Config.mysql, "password", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            ChkSettAusa.DataBindings.Add("Checked", tsm.Setting, "EnableLogSave", false, DataSourceUpdateMode.OnPropertyChanged);
+            ChkSettAust.DataBindings.Add("Checked", tsm.Setting, "LaunchWithSys", false, DataSourceUpdateMode.OnPropertyChanged);
+            ChkSettDark.DataBindings.Add("Checked", tsm.Setting, "DarkUITheme", false, DataSourceUpdateMode.OnPropertyChanged);
+            ChkSettMini.DataBindings.Add("Checked", tsm.Setting, "MinimizeToTray", false, DataSourceUpdateMode.OnPropertyChanged);
+            ChkSettRest.DataBindings.Add("Checked", tsm.Setting, "AutoRestartTrojan", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         public string ConnectStrings(string[] arr)
@@ -125,12 +138,18 @@ namespace Litrojan
             return n.TrimEnd(',');
         }
 
-        public void UpdateTxtLogDisplay(string Infomation, string Source)
+        public void UpdateTxtLogDisplay(string Information, string Source)
         {
-            var info = $"[{Source}] {(Source != "TrojanCore" ? $"({DateTime.Now.ToString("s")})" : "")} {Infomation.Trim()}";
+            var info = $"[{Source}] {(Source != "TrojanCore" ? $"({DateTime.Now.ToString("s")})" : "")} {Information.Trim()}";
             GlobalVaribleHost.LogBuffer.Add(info);
             logHost += $"{info}\r\n";
             ThreadSetText($"{info}\r\n");
+        }
+
+        public void UpdateNoticeDisplay(string Information)
+        {
+            var info = $"({DateTime.Now.ToString("s")}) {Information.Trim()}\r\n";
+            TxtSettStatus.AppendText(info);
         }
 
         delegate void SetTextCallback(string text);
@@ -148,7 +167,40 @@ namespace Litrojan
             }
         }
 
+        private void HideWindow()
+        {
+            NotTrayIcon.Visible = true;
+            NotTrayIcon.ShowBalloonTip(500);
+            NotTrayIcon.Text = $"Litrojan - {Enum.GetName(typeof(RunStatus), tpm.TrojanStatus())} ({Enum.GetName(typeof(RunMode), tcm.Config.RunMode)})";
+            Visible = false;
+        }
+
+        private void UpdateTheme(bool IsDark)
+        {
+            var skmgr = MaterialSkinManager.Instance;
+            if (IsDark)
+            {
+                skmgr.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+                skmgr.Theme = MaterialSkinManager.Themes.DARK;
+                TxtLogDisplay.ForeColor = Color.White;
+                TxtLogDisplay.BackColor = Color.FromArgb(unchecked((int)0xFF333333));
+                TxtSettStatus.ForeColor = Color.White;
+                TxtSettStatus.BackColor = Color.FromArgb(unchecked((int)0xFF333333));
+            }
+            else
+            {
+                skmgr.ColorScheme = new ColorScheme(Primary.Indigo500, Primary.Indigo700, Primary.Indigo100, Accent.Pink200, TextShade.WHITE);
+                skmgr.Theme = MaterialSkinManager.Themes.LIGHT;
+                TxtLogDisplay.ForeColor = Color.Black;
+                TxtLogDisplay.BackColor = Color.White;
+                TxtSettStatus.ForeColor = Color.Black;
+                TxtSettStatus.BackColor = Color.White;
+            }
+        }
+
         #endregion
+
+        #region Events
 
         private void BtnLogCopy_Click(object sender, EventArgs e)
         {
@@ -167,6 +219,7 @@ namespace Litrojan
         {
             LitrojanUtils.AutoIncrementalSave();
             logHost = "";
+            TxtLogDisplay.Clear();
         }
 
         private void BtnLogSave_Click(object sender, EventArgs e)
@@ -201,7 +254,7 @@ namespace Litrojan
 
         private void BtnHomeStart_Click(object sender, EventArgs e)
         {
-            if (GlobalVaribleHost.TrojanStatus == RunStatus.Stopped)
+            if (tpm.TrojanStatus() == RunStatus.Stopped)
             {
                 var p = tcm.ExportConfig(tcm.Config.RunMode);
                 tpm.TrojanStart(p, tcm.Config.RunMode);
@@ -250,10 +303,7 @@ namespace Litrojan
         {
             if (FormWindowState.Minimized == WindowState)
             {
-                NotTrayIcon.Visible = true;
-                NotTrayIcon.ShowBalloonTip(500);
-                NotTrayIcon.Text = $"Litrojan - {Enum.GetName(typeof(RunStatus), GlobalVaribleHost.TrojanStatus)} ({Enum.GetName(typeof(RunMode), tcm.Config.RunMode)})";
-                Visible = false;
+                HideWindow();
             }
         }
 
@@ -265,12 +315,15 @@ namespace Litrojan
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //base.OnFormClosing(e);
             e.Cancel = true;
-            NotTrayIcon.Visible = true;
-            NotTrayIcon.ShowBalloonTip(500);
-            NotTrayIcon.Text = $"Litrojan - {Enum.GetName(typeof(RunStatus), GlobalVaribleHost.TrojanStatus)} ({Enum.GetName(typeof(RunMode), tcm.Config.RunMode)})";
-            Visible = false;
+            if (tsm.TryMinimize())
+            {
+                HideWindow();
+            }
+            else
+            {
+                exitLitrojanToolStripMenuItem_Click(this, null);
+            }
         }
 
         private void restartToolStripMenuItem_Click(object sender, EventArgs e)
@@ -280,11 +333,100 @@ namespace Litrojan
 
         private void exitLitrojanToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autosave.Abort();
+            tsm.TryDisableLogSave();
+            tsm.TryManualRestartTrojan();
             tpm.TrojanStop();
             UpdateTxtLogDisplay($"Litrojan ({GlobalVaribleHost.LitrojanVer}) Stopped.", "Litrojan");
             LitrojanUtils.AutoIncrementalSave();
             Environment.Exit(0);
         }
+
+        private void BtnSettExpo_Click(object sender, EventArgs e)
+        {
+            var p = tcm.ExportConfig(RunMode.Liconf, "", false);
+            var s = $"tconf://{LitrojanUtils.Base64Encode(File.ReadAllText(p))}";
+            TxtSettStatus.Text = s;
+            Clipboard.SetText(s);
+        }
+
+        private void BtnSettImpo_Click(object sender, EventArgs e)
+        {
+            var s = Clipboard.GetText();
+            if (!s.StartsWith("tconf://"))
+                s = TxtSettStatus.Text;
+            if (!s.StartsWith("tconf://"))
+            {
+                TxtSettStatus.Text = "Please paste share link here.";
+                return;
+            }
+            var p = Path.GetTempFileName();
+            s = LitrojanUtils.Base64Decode(s.Remove(0, "tconf://".Length));
+            File.WriteAllText(p, s);
+            tcm.LoadConfig(p);
+        }
+
+        private void BtnSettXxxx_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as MaterialCheckBox).Checked)
+            {
+                Random rng = new Random();
+                BtnSettXxxx.Text = GlobalVaribleHost.Surprise[rng.Next(0, GlobalVaribleHost.Surprise.Length - 1)];
+            }
+            else
+            {
+                BtnSettXxxx.Text = "I can still pass through the wall";
+            }
+        }
+
+        private void ChkSettDark_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateTheme((sender as MaterialCheckBox).Checked);
+        }
+
+        private void ChkSettAust_CheckedChanged(object sender, EventArgs e)
+        {
+            if(!tsm.TryLaunchWithSys((sender as MaterialCheckBox).Checked))
+            {
+                ChkSettAust.CheckedChanged -= ChkSettAust_CheckedChanged;
+                ChkSettAust.Checked = !ChkSettAust.Checked;
+                ChkSettAust.CheckedChanged += ChkSettAust_CheckedChanged;
+            }
+        }
+
+        private void ChkSettRest_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!tsm.TrySetRestartTrojan((sender as MaterialCheckBox).Checked))
+            {
+                ChkSettRest.CheckedChanged -= ChkSettRest_CheckedChanged;
+                ChkSettRest.Checked = !ChkSettRest.Checked;
+                ChkSettRest.CheckedChanged += ChkSettRest_CheckedChanged;
+            }
+        }
+
+        private void ChkSettAusa_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!tsm.TrySetLogSave((sender as MaterialCheckBox).Checked))
+            {
+                ChkSettAusa.CheckedChanged -= ChkSettAusa_CheckedChanged;
+                ChkSettAusa.Checked = !ChkSettAusa.Checked;
+                ChkSettAusa.CheckedChanged += ChkSettAusa_CheckedChanged;
+            }
+        }
+
+        private void BtnSettSave_Click(object sender, EventArgs e)
+        {
+            tsm.SaveSetting();
+        }
+
+        private void BtnSettRstr_Click(object sender, EventArgs e)
+        {
+            tsm.LoadSetting();
+        }
+
+        private void BtnSettPing_Click(object sender, EventArgs e)
+        {
+            tnm.Ping();
+        }
+        #endregion
     }
 }

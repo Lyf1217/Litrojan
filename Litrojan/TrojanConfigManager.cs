@@ -40,33 +40,33 @@ namespace Litrojan
                 SaveConfig();
             }
 
-            bool flag = true;
+            bool loadLiconf = false;
 
-            if ((!LoadOriginal) && File.Exists(Path.ChangeExtension(ConfPath, ".liconf")))
+            if (!LoadOriginal && File.Exists(Path.ChangeExtension(ConfPath, ".liconf")))
             {
                 ConfPath = Path.ChangeExtension(ConfPath, ".liconf");
-                flag = true;
+                loadLiconf = true;
             }
 
             JsonConvert.PopulateObject(File.ReadAllText(ConfPath), Config);
 
-            if(flag)
+            if(loadLiconf)
                 infoDisp("Read Litrojan config successful.", "LiConfMgmt");
 
             switch (Config.run_type)
             {
                 case "client":
-                    if (!flag)
+                    if (!loadLiconf)
                         infoDisp("Read client config successful.", "LiConfMgmt");
                     Config.RunMode = RunMode.Client;
                     break;
                 case "server":
-                    if (!flag)
+                    if (!loadLiconf)
                         infoDisp("Read server config successful.", "LiConfMgmt");
                     Config.RunMode = RunMode.Server;
                     break;
                 case "forward":
-                    if (!flag)
+                    if (!loadLiconf)
                         infoDisp("Read router config successful.", "LiConfMgmt");
                     Config.RunMode = RunMode.Router;
                     break;
@@ -84,13 +84,30 @@ namespace Litrojan
             return true;
         }
 
+        public bool LoadConfig(string path)
+        {
+            if (!File.Exists(path))
+            {
+                return false;
+            }
+
+            var t = string.Copy(ConfPath);
+            ConfPath = path;
+
+            LoadConfig(true);
+
+            ConfPath = t;
+
+            return true;
+        }
+
         /// <summary>
         /// Export config file meet Trojan standard. If no SavePath spicified, a temp file is used.
         /// </summary>
-        public string ExportConfig(RunMode Filter, string SavePath = "")
+        public string ExportConfig(RunMode Filter, string SavePath = "", bool format = true)
         {
             var o = TrojanConfigBuilder.BuildConfig(Config, Filter, Config.RunMode);
-            var s = JsonConvert.SerializeObject(o, Formatting.Indented);
+            var s = JsonConvert.SerializeObject(o, format ? Formatting.Indented : Formatting.None);
             if(string.IsNullOrEmpty(SavePath))
                 SavePath = Path.GetTempFileName();
 

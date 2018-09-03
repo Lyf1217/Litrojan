@@ -105,6 +105,21 @@
             this.BtnAdvnRestore = new MaterialSkin.Controls.MaterialFlatButton();
             this.BtnAdvnCancel = new MaterialSkin.Controls.MaterialFlatButton();
             this.BtnAdvnSave = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.TabSetting = new System.Windows.Forms.TabPage();
+            this.BtnSettImpo = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.BtnSettXxxx = new MaterialSkin.Controls.MaterialCheckBox();
+            this.ChkSettDark = new MaterialSkin.Controls.MaterialCheckBox();
+            this.ChkSettAusa = new MaterialSkin.Controls.MaterialCheckBox();
+            this.BtnSettRstr = new MaterialSkin.Controls.MaterialFlatButton();
+            this.BtnSettCanc = new MaterialSkin.Controls.MaterialFlatButton();
+            this.BtnSettSave = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.TxtSettStatus = new System.Windows.Forms.TextBox();
+            this.ChkSettRest = new MaterialSkin.Controls.MaterialCheckBox();
+            this.BtnSettPing = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.materialDivider3 = new MaterialSkin.Controls.MaterialDivider();
+            this.ChkSettMini = new MaterialSkin.Controls.MaterialCheckBox();
+            this.BtnSettExpo = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.ChkSettAust = new MaterialSkin.Controls.MaterialCheckBox();
             this.TabLog = new System.Windows.Forms.TabPage();
             this.BtnLogSave = new MaterialSkin.Controls.MaterialRaisedButton();
             this.BtnLogCopy = new MaterialSkin.Controls.MaterialFlatButton();
@@ -127,6 +142,7 @@
             this.TabConfig.SuspendLayout();
             this.panel1.SuspendLayout();
             this.TabMode.SuspendLayout();
+            this.TabSetting.SuspendLayout();
             this.TabLog.SuspendLayout();
             this.TabAbout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -141,6 +157,7 @@
             this.BtnModeSave.Controls.Add(this.TabHome);
             this.BtnModeSave.Controls.Add(this.TabConfig);
             this.BtnModeSave.Controls.Add(this.TabMode);
+            this.BtnModeSave.Controls.Add(this.TabSetting);
             this.BtnModeSave.Controls.Add(this.TabLog);
             this.BtnModeSave.Controls.Add(this.TabAbout);
             this.BtnModeSave.Depth = 0;
@@ -1225,7 +1242,7 @@
             this.BtnAdvnRestore.AutoSize = true;
             this.BtnAdvnRestore.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BtnAdvnRestore.Depth = 0;
-            this.BtnAdvnRestore.Location = new System.Drawing.Point(444, 241);
+            this.BtnAdvnRestore.Location = new System.Drawing.Point(435, 241);
             this.BtnAdvnRestore.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.BtnAdvnRestore.MouseState = MaterialSkin.MouseState.HOVER;
             this.BtnAdvnRestore.Name = "BtnAdvnRestore";
@@ -1241,7 +1258,7 @@
             this.BtnAdvnCancel.AutoSize = true;
             this.BtnAdvnCancel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BtnAdvnCancel.Depth = 0;
-            this.BtnAdvnCancel.Location = new System.Drawing.Point(523, 241);
+            this.BtnAdvnCancel.Location = new System.Drawing.Point(514, 241);
             this.BtnAdvnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.BtnAdvnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.BtnAdvnCancel.Name = "BtnAdvnCancel";
@@ -1255,7 +1272,7 @@
             // BtnAdvnSave
             // 
             this.BtnAdvnSave.Depth = 0;
-            this.BtnAdvnSave.Location = new System.Drawing.Point(362, 241);
+            this.BtnAdvnSave.Location = new System.Drawing.Point(353, 241);
             this.BtnAdvnSave.MouseState = MaterialSkin.MouseState.HOVER;
             this.BtnAdvnSave.Name = "BtnAdvnSave";
             this.BtnAdvnSave.Primary = true;
@@ -1264,6 +1281,235 @@
             this.BtnAdvnSave.Text = "Save";
             this.BtnAdvnSave.UseVisualStyleBackColor = true;
             this.BtnAdvnSave.Click += new System.EventHandler(this.BtnConfSave_Click);
+            // 
+            // TabSetting
+            // 
+            this.TabSetting.BackColor = System.Drawing.Color.White;
+            this.TabSetting.Controls.Add(this.BtnSettImpo);
+            this.TabSetting.Controls.Add(this.BtnSettXxxx);
+            this.TabSetting.Controls.Add(this.ChkSettDark);
+            this.TabSetting.Controls.Add(this.ChkSettAusa);
+            this.TabSetting.Controls.Add(this.BtnSettRstr);
+            this.TabSetting.Controls.Add(this.BtnSettCanc);
+            this.TabSetting.Controls.Add(this.BtnSettSave);
+            this.TabSetting.Controls.Add(this.TxtSettStatus);
+            this.TabSetting.Controls.Add(this.ChkSettRest);
+            this.TabSetting.Controls.Add(this.BtnSettPing);
+            this.TabSetting.Controls.Add(this.materialDivider3);
+            this.TabSetting.Controls.Add(this.ChkSettMini);
+            this.TabSetting.Controls.Add(this.BtnSettExpo);
+            this.TabSetting.Controls.Add(this.ChkSettAust);
+            this.TabSetting.Location = new System.Drawing.Point(4, 22);
+            this.TabSetting.Name = "TabSetting";
+            this.TabSetting.Padding = new System.Windows.Forms.Padding(3);
+            this.TabSetting.Size = new System.Drawing.Size(594, 279);
+            this.TabSetting.TabIndex = 3;
+            this.TabSetting.Text = "Settings";
+            // 
+            // BtnSettImpo
+            // 
+            this.BtnSettImpo.Depth = 0;
+            this.BtnSettImpo.Location = new System.Drawing.Point(383, 87);
+            this.BtnSettImpo.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnSettImpo.Name = "BtnSettImpo";
+            this.BtnSettImpo.Primary = true;
+            this.BtnSettImpo.Size = new System.Drawing.Size(137, 36);
+            this.BtnSettImpo.TabIndex = 39;
+            this.BtnSettImpo.Text = "Import Config";
+            this.BtnSettImpo.UseVisualStyleBackColor = true;
+            this.BtnSettImpo.Click += new System.EventHandler(this.BtnSettImpo_Click);
+            // 
+            // BtnSettXxxx
+            // 
+            this.BtnSettXxxx.AutoSize = true;
+            this.BtnSettXxxx.Depth = 0;
+            this.BtnSettXxxx.Font = new System.Drawing.Font("Roboto", 10F);
+            this.BtnSettXxxx.Location = new System.Drawing.Point(7, 177);
+            this.BtnSettXxxx.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnSettXxxx.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.BtnSettXxxx.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnSettXxxx.Name = "BtnSettXxxx";
+            this.BtnSettXxxx.Ripple = true;
+            this.BtnSettXxxx.Size = new System.Drawing.Size(226, 30);
+            this.BtnSettXxxx.TabIndex = 38;
+            this.BtnSettXxxx.Text = "Now I can pass through the wall";
+            this.BtnSettXxxx.UseVisualStyleBackColor = true;
+            this.BtnSettXxxx.CheckedChanged += new System.EventHandler(this.BtnSettXxxx_CheckedChanged);
+            // 
+            // ChkSettDark
+            // 
+            this.ChkSettDark.AutoSize = true;
+            this.ChkSettDark.Depth = 0;
+            this.ChkSettDark.Font = new System.Drawing.Font("Roboto", 10F);
+            this.ChkSettDark.Location = new System.Drawing.Point(7, 143);
+            this.ChkSettDark.Margin = new System.Windows.Forms.Padding(0);
+            this.ChkSettDark.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.ChkSettDark.MouseState = MaterialSkin.MouseState.HOVER;
+            this.ChkSettDark.Name = "ChkSettDark";
+            this.ChkSettDark.Ripple = true;
+            this.ChkSettDark.Size = new System.Drawing.Size(117, 30);
+            this.ChkSettDark.TabIndex = 37;
+            this.ChkSettDark.Text = "Dark UI theme";
+            this.ChkSettDark.UseVisualStyleBackColor = true;
+            this.ChkSettDark.CheckedChanged += new System.EventHandler(this.ChkSettDark_CheckedChanged);
+            // 
+            // ChkSettAusa
+            // 
+            this.ChkSettAusa.AutoSize = true;
+            this.ChkSettAusa.Depth = 0;
+            this.ChkSettAusa.Font = new System.Drawing.Font("Roboto", 10F);
+            this.ChkSettAusa.Location = new System.Drawing.Point(7, 109);
+            this.ChkSettAusa.Margin = new System.Windows.Forms.Padding(0);
+            this.ChkSettAusa.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.ChkSettAusa.MouseState = MaterialSkin.MouseState.HOVER;
+            this.ChkSettAusa.Name = "ChkSettAusa";
+            this.ChkSettAusa.Ripple = true;
+            this.ChkSettAusa.Size = new System.Drawing.Size(204, 30);
+            this.ChkSettAusa.TabIndex = 36;
+            this.ChkSettAusa.Text = "Enable runtime log autosave";
+            this.ChkSettAusa.UseVisualStyleBackColor = true;
+            this.ChkSettAusa.CheckedChanged += new System.EventHandler(this.ChkSettAusa_CheckedChanged);
+            // 
+            // BtnSettRstr
+            // 
+            this.BtnSettRstr.AutoSize = true;
+            this.BtnSettRstr.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BtnSettRstr.Depth = 0;
+            this.BtnSettRstr.Location = new System.Drawing.Point(435, 241);
+            this.BtnSettRstr.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.BtnSettRstr.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnSettRstr.Name = "BtnSettRstr";
+            this.BtnSettRstr.Primary = false;
+            this.BtnSettRstr.Size = new System.Drawing.Size(71, 36);
+            this.BtnSettRstr.TabIndex = 35;
+            this.BtnSettRstr.Text = "Restore";
+            this.BtnSettRstr.UseVisualStyleBackColor = true;
+            this.BtnSettRstr.Click += new System.EventHandler(this.BtnSettRstr_Click);
+            // 
+            // BtnSettCanc
+            // 
+            this.BtnSettCanc.AutoSize = true;
+            this.BtnSettCanc.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BtnSettCanc.Depth = 0;
+            this.BtnSettCanc.Location = new System.Drawing.Point(514, 241);
+            this.BtnSettCanc.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.BtnSettCanc.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnSettCanc.Name = "BtnSettCanc";
+            this.BtnSettCanc.Primary = false;
+            this.BtnSettCanc.Size = new System.Drawing.Size(64, 36);
+            this.BtnSettCanc.TabIndex = 34;
+            this.BtnSettCanc.Text = "Cancel";
+            this.BtnSettCanc.UseVisualStyleBackColor = true;
+            this.BtnSettCanc.Click += new System.EventHandler(this.BtnSettRstr_Click);
+            // 
+            // BtnSettSave
+            // 
+            this.BtnSettSave.Depth = 0;
+            this.BtnSettSave.Location = new System.Drawing.Point(353, 241);
+            this.BtnSettSave.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnSettSave.Name = "BtnSettSave";
+            this.BtnSettSave.Primary = true;
+            this.BtnSettSave.Size = new System.Drawing.Size(75, 36);
+            this.BtnSettSave.TabIndex = 33;
+            this.BtnSettSave.Text = "Save";
+            this.BtnSettSave.UseVisualStyleBackColor = true;
+            this.BtnSettSave.Click += new System.EventHandler(this.BtnSettSave_Click);
+            // 
+            // TxtSettStatus
+            // 
+            this.TxtSettStatus.Location = new System.Drawing.Point(309, 129);
+            this.TxtSettStatus.Multiline = true;
+            this.TxtSettStatus.Name = "TxtSettStatus";
+            this.TxtSettStatus.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.TxtSettStatus.Size = new System.Drawing.Size(279, 103);
+            this.TxtSettStatus.TabIndex = 32;
+            // 
+            // ChkSettRest
+            // 
+            this.ChkSettRest.AutoSize = true;
+            this.ChkSettRest.Depth = 0;
+            this.ChkSettRest.Font = new System.Drawing.Font("Roboto", 10F);
+            this.ChkSettRest.Location = new System.Drawing.Point(7, 75);
+            this.ChkSettRest.Margin = new System.Windows.Forms.Padding(0);
+            this.ChkSettRest.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.ChkSettRest.MouseState = MaterialSkin.MouseState.HOVER;
+            this.ChkSettRest.Name = "ChkSettRest";
+            this.ChkSettRest.Ripple = true;
+            this.ChkSettRest.Size = new System.Drawing.Size(274, 30);
+            this.ChkSettRest.TabIndex = 30;
+            this.ChkSettRest.Text = "Auto-restart Trojan when process crash";
+            this.ChkSettRest.UseVisualStyleBackColor = true;
+            this.ChkSettRest.CheckedChanged += new System.EventHandler(this.ChkSettRest_CheckedChanged);
+            // 
+            // BtnSettPing
+            // 
+            this.BtnSettPing.Depth = 0;
+            this.BtnSettPing.Location = new System.Drawing.Point(383, 3);
+            this.BtnSettPing.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnSettPing.Name = "BtnSettPing";
+            this.BtnSettPing.Primary = true;
+            this.BtnSettPing.Size = new System.Drawing.Size(137, 36);
+            this.BtnSettPing.TabIndex = 28;
+            this.BtnSettPing.Text = "Ping Server";
+            this.BtnSettPing.UseVisualStyleBackColor = true;
+            this.BtnSettPing.Click += new System.EventHandler(this.BtnSettPing_Click);
+            // 
+            // materialDivider3
+            // 
+            this.materialDivider3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialDivider3.Depth = 0;
+            this.materialDivider3.Location = new System.Drawing.Point(299, 2);
+            this.materialDivider3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialDivider3.Name = "materialDivider3";
+            this.materialDivider3.Size = new System.Drawing.Size(1, 300);
+            this.materialDivider3.TabIndex = 26;
+            this.materialDivider3.Text = "materialDivider3";
+            // 
+            // ChkSettMini
+            // 
+            this.ChkSettMini.AutoSize = true;
+            this.ChkSettMini.Depth = 0;
+            this.ChkSettMini.Font = new System.Drawing.Font("Roboto", 10F);
+            this.ChkSettMini.Location = new System.Drawing.Point(7, 41);
+            this.ChkSettMini.Margin = new System.Windows.Forms.Padding(0);
+            this.ChkSettMini.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.ChkSettMini.MouseState = MaterialSkin.MouseState.HOVER;
+            this.ChkSettMini.Name = "ChkSettMini";
+            this.ChkSettMini.Ripple = true;
+            this.ChkSettMini.Size = new System.Drawing.Size(177, 30);
+            this.ChkSettMini.TabIndex = 4;
+            this.ChkSettMini.Text = "Minimize to system tray";
+            this.ChkSettMini.UseVisualStyleBackColor = true;
+            // 
+            // BtnSettExpo
+            // 
+            this.BtnSettExpo.Depth = 0;
+            this.BtnSettExpo.Location = new System.Drawing.Point(383, 45);
+            this.BtnSettExpo.MouseState = MaterialSkin.MouseState.HOVER;
+            this.BtnSettExpo.Name = "BtnSettExpo";
+            this.BtnSettExpo.Primary = true;
+            this.BtnSettExpo.Size = new System.Drawing.Size(137, 36);
+            this.BtnSettExpo.TabIndex = 2;
+            this.BtnSettExpo.Text = "Export Config";
+            this.BtnSettExpo.UseVisualStyleBackColor = true;
+            this.BtnSettExpo.Click += new System.EventHandler(this.BtnSettExpo_Click);
+            // 
+            // ChkSettAust
+            // 
+            this.ChkSettAust.AutoSize = true;
+            this.ChkSettAust.Depth = 0;
+            this.ChkSettAust.Font = new System.Drawing.Font("Roboto", 10F);
+            this.ChkSettAust.Location = new System.Drawing.Point(7, 7);
+            this.ChkSettAust.Margin = new System.Windows.Forms.Padding(0);
+            this.ChkSettAust.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.ChkSettAust.MouseState = MaterialSkin.MouseState.HOVER;
+            this.ChkSettAust.Name = "ChkSettAust";
+            this.ChkSettAust.Ripple = true;
+            this.ChkSettAust.Size = new System.Drawing.Size(260, 30);
+            this.ChkSettAust.TabIndex = 0;
+            this.ChkSettAust.Text = "Launch Litrojan when Windows starts";
+            this.ChkSettAust.UseVisualStyleBackColor = true;
+            this.ChkSettAust.CheckedChanged += new System.EventHandler(this.ChkSettAust_CheckedChanged);
             // 
             // TabLog
             // 
@@ -1276,7 +1522,7 @@
             this.TabLog.Name = "TabLog";
             this.TabLog.Padding = new System.Windows.Forms.Padding(3);
             this.TabLog.Size = new System.Drawing.Size(594, 279);
-            this.TabLog.TabIndex = 3;
+            this.TabLog.TabIndex = 4;
             this.TabLog.Text = "Log";
             // 
             // BtnLogSave
@@ -1343,7 +1589,7 @@
             this.TabAbout.Name = "TabAbout";
             this.TabAbout.Padding = new System.Windows.Forms.Padding(3);
             this.TabAbout.Size = new System.Drawing.Size(594, 279);
-            this.TabAbout.TabIndex = 4;
+            this.TabAbout.TabIndex = 5;
             this.TabAbout.Text = "About";
             // 
             // LblAboutVersion
@@ -1453,6 +1699,7 @@
             this.Name = "MainForm";
             this.Text = "Litrojan - Lite User Interface for Trojan";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.BtnModeSave.ResumeLayout(false);
             this.TabHome.ResumeLayout(false);
@@ -1463,6 +1710,8 @@
             this.panel1.PerformLayout();
             this.TabMode.ResumeLayout(false);
             this.TabMode.PerformLayout();
+            this.TabSetting.ResumeLayout(false);
+            this.TabSetting.PerformLayout();
             this.TabLog.ResumeLayout(false);
             this.TabLog.PerformLayout();
             this.TabAbout.ResumeLayout(false);
@@ -1567,6 +1816,21 @@
         private System.Windows.Forms.ToolStripMenuItem restartToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitLitrojanToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.TabPage TabSetting;
+        private MaterialSkin.Controls.MaterialRaisedButton BtnSettExpo;
+        private MaterialSkin.Controls.MaterialCheckBox ChkSettAust;
+        private MaterialSkin.Controls.MaterialCheckBox ChkSettRest;
+        private MaterialSkin.Controls.MaterialRaisedButton BtnSettPing;
+        private MaterialSkin.Controls.MaterialDivider materialDivider3;
+        private MaterialSkin.Controls.MaterialCheckBox ChkSettMini;
+        private System.Windows.Forms.TextBox TxtSettStatus;
+        private MaterialSkin.Controls.MaterialFlatButton BtnSettRstr;
+        private MaterialSkin.Controls.MaterialFlatButton BtnSettCanc;
+        private MaterialSkin.Controls.MaterialRaisedButton BtnSettSave;
+        private MaterialSkin.Controls.MaterialCheckBox BtnSettXxxx;
+        private MaterialSkin.Controls.MaterialCheckBox ChkSettDark;
+        private MaterialSkin.Controls.MaterialRaisedButton BtnSettImpo;
+        private MaterialSkin.Controls.MaterialCheckBox ChkSettAusa;
     }
 }
 

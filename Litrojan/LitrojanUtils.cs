@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
+using System.Net.NetworkInformation;
+using System.Text;
 
 namespace Litrojan
 {
@@ -34,13 +35,44 @@ namespace Litrojan
             }
         }
 
-        public static void AutoSave()
+        public static string Base64Encode(string plainText)
         {
-            for(; ; )
+            var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+            return Convert.ToBase64String(plainTextBytes);
+        }
+
+        public static string Base64Decode(string base64EncodedData)
+        {
+            var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
+            return Encoding.UTF8.GetString(base64EncodedBytes);
+        }
+
+        public static bool PingHost(string nameOrAddress, out long roundtrip)
+        {
+            bool pingable = false;
+            Ping pinger = null;
+
+            try
             {
-                AutoIncrementalSave();
-                Thread.Sleep(5000);
+                pinger = new Ping();
+                PingReply reply = pinger.Send(nameOrAddress);
+                pingable = reply.Status == IPStatus.Success;
+                roundtrip = reply.RoundtripTime;
             }
+            catch (PingException)
+            {
+                roundtrip = -1;
+                // Discard PingExceptions and return false;
+            }
+            finally
+            {
+                if (pinger != null)
+                {
+                    pinger.Dispose();
+                }
+            }
+
+            return pingable;
         }
     }
 }
