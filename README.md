@@ -14,6 +14,11 @@ Lite User Interface for Trojan, an unidentifiable mechanism that helps you bypas
 - .NET Framework 4.5+
 - Trojan Core 1.6.0+ [Download Here](https://github.com/trojan-gfw/trojan/releases/latest)
 
+### Recommend
+- SwitchyOmega
+- Proxifier
+- Privoxy
+
 ### Documentations
 - Configure guide: [Offical Guide](https://trojan-gfw.github.io/trojan/config)
 - Trojan Core Source: [Github](https://github.com/trojan-gfw/trojan)
